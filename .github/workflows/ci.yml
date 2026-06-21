@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    # Executa todo domigo UTC
-    - cron: '4 14 * * 7'
+    # Executa todo domingo UTC
+    - cron: '10 14 * * 0'
 
 jobs:
   testes:
