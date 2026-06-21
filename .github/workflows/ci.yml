@@ -1,0 +1,38 @@
+name: Pipeline CI/CD - Testes Automatizados
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Executa todo domigo UTC
+    - cron: '4 14 * * 7'
+
+jobs:
+  testes:
+    name: Executar testes e gerar relatorio
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Executar testes e gerar relatorio JUnit
+        run: npm run test:ci
+
+      - name: Publicar artefato do relatorio de testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-testes-junit
+          path: reports/junit/results.xml
+          if-no-files-found: error
+          retention-days: 30
