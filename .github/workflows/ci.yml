@@ -26,26 +26,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Baixa o codigo do repositorio para o ambiente temporario da execucao.
       - name: Checkout do codigo
         uses: actions/checkout@v4
 
+      # Prepara o Node.js na versao usada pelo projeto e ativa cache de dependencias.
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # Instala dependencias exatamente conforme o lockfile para garantir reproducibilidade.
       - name: Instalar dependencias
         run: npm ci
 
+      # Executa os testes unitarios e gera o relatorio HTML com o Mochawesome.
       - name: Executar testes e gerar relatorios
         run: npm run test:ci
 
+      # Publica o relatorio como artifact para download, mesmo se algum teste falhar.
       - name: Salvando relatório de testes
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-testes-html-run-${{ github.run_number }}
-          path: reports/mochawesome/index.html
+          path: reports/mochawesome/
           if-no-files-found: error
           retention-days: 30
