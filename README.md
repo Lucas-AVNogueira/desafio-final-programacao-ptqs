@@ -51,7 +51,7 @@ Todos os testes utilizam a metodologia **Arrange-Act-Assert** (AAA).
 - Testes: `test/servicoDePagamento.test.js`
 - Script de teste local: `npm test`
 - Script de teste para CI com relatório: `npm run test:ci`
-- Relatório gerado: `reports/mochawesome/index.html`
+- Relatório gerado: `reports/mochawesome/`
 
 ## Como a pipeline funciona
 
