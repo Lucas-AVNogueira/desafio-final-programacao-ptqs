@@ -1,15 +1,28 @@
-name: Pipeline CI/CD - Testes Automatizados
+
+
+# nome da pipeline
+name: 'Testes Unitários'
+
+# gartilhos / triggers - regras de disparo
+# gatilho manual = Workflow_dispatch
+# gatilho por conclusão de outra pipeline = workflow_run
+
 
 on:
   push:
+       branches:
+          - main
   workflow_dispatch:
   schedule:
     # Temporario para validacao: executa a cada 5 minutos (UTC)
     - cron: '*/5 * * * *'
 
+# tarefas dentro da pipeline = Jobs
+
 jobs:
+   #nome do job
   testes:
-    name: Executar testes e gerar relatorio
+    name: Executar testes unitario e gerar relatorio
     runs-on: ubuntu-latest
 
     steps:
@@ -25,14 +38,14 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Executar testes e gerar relatorio JUnit
+      - name: Executar testes e gerar relatorios
         run: npm run test:ci
 
-      - name: Publicar artefato do relatorio de testes
+      - name: Salvando relatório de testes
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: relatorio-testes-junit
-          path: reports/junit/results.xml
+          name: relatorio-testes-html-run-${{ github.run_number }}
+          path: reports/mochawesome/index.html
           if-no-files-found: error
           retention-days: 30

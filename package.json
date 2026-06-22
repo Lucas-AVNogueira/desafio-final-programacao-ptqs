@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha \"test/**/*.test.js\"",
-    "test:ci": "node -e \"require('fs').mkdirSync('reports/junit',{recursive:true})\" && mocha \"test/**/*.test.js\" --reporter mocha-junit-reporter --reporter-options mochaFile=reports/junit/results.xml,toConsole=true"
+    "test:ci": "node -e \"const fs=require('fs'); fs.mkdirSync('reports/mochawesome',{recursive:true}); fs.rmSync('reports/mochawesome/index.html',{force:true});\" && mocha \"test/**/*.test.js\" --reporter mochawesome --reporter-option reportDir=reports/mochawesome,reportFilename=index,quiet=true,overwrite=true,html=true,json=false"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,6 @@
     "mocha": "^11.7.6"
   },
   "devDependencies": {
-    "mocha-junit-reporter": "^2.2.1"
+    "mochawesome": "^7.1.4"
   }
 }
